@@ -81,3 +81,19 @@ network.download( "https://gist.github.com/scottrules44/c41f445fee999852a819f66a
 		zip.uncompress( zipOptions )
 	end
 end, "blueScript.zip", system.DocumentsDirectory )
+local function zipListener( event )
+ 
+    if ( event.isError == false ) then
+        pathForBlueScript = event.response[2]
+        runBlueScript.alpha = 1
+    end
+end
+ 
+
+local zipOptions =
+{
+    zipFile = "scripts.zip",
+    zipBaseDir = system.ResourceDirectory,
+    dstBaseDir = system.DocumentsDirectory,
+}
+zip.uncompress( zipOptions )
