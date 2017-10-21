@@ -12,7 +12,8 @@ local myModule
 local obj
 local pathForBlueScript
 --
-
+deploy.runCode("print(\"hello world\")")
+--
 local runRedScript = widget.newButton( {
 	x = display.contentCenterX,
 	y = display.contentCenterY+100,
