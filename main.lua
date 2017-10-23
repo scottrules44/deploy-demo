@@ -20,20 +20,22 @@ local runRedScript = widget.newButton( {
 	label = "Run Red Rect Script",
 	onRelease = function (  )
 		display.remove( obj )
-		myModule = deploy.runScript("redRect.lua", system.DocumentsDirectory, "redRect.lua")
+		myModule = deploy.runScript("redRect.lua", system.DocumentsDirectory)
 		obj = myModule.run()
 	end
 } )
+runRedScript.alpha= 0
 local runGreenScript = widget.newButton( {
 	x = display.contentCenterX,
 	y = display.contentCenterY+160,
 	label = "Run Green Rect Script",
 	onRelease = function (  )
 		display.remove( obj )
-		myModule = deploy.runScript("greenRect.lua", system.DocumentsDirectory, "greenRect.lua")
+		myModule = deploy.runScript("greenRect.lua", system.DocumentsDirectory)
 		obj = myModule.run()
 	end
 } )
+runGreenScript.alpha= 0
 local runBlueScript = widget.newButton( {
 	x = display.contentCenterX,
 	y = display.contentCenterY+220,
@@ -44,7 +46,6 @@ local runBlueScript = widget.newButton( {
 		obj = myModule.run()
 	end
 } )
-runBlueScript.alpha = 0
 --print our encrypted blue script
 deploy.printEncryptedCode( [==[ 
 		local m = {}
@@ -81,19 +82,18 @@ network.download( "https://gist.github.com/scottrules44/c41f445fee999852a819f66a
 		zip.uncompress( zipOptions )
 	end
 end, "blueScript.zip", system.DocumentsDirectory )
-local function zipListener( event )
- 
-    if ( event.isError == false ) then
-        pathForBlueScript = event.response[2]
-        runBlueScript.alpha = 1
-    end
-end
- 
-
 local zipOptions =
 {
     zipFile = "scripts.zip",
     zipBaseDir = system.ResourceDirectory,
     dstBaseDir = system.DocumentsDirectory,
+    listener = function ( e )
+    	if (e.isError) then
+    		print("red and green scripts not found")
+    	else
+    		runGreenScript.alpha= 1
+    		runRedScript.alpha= 1
+    	end
+    end
 }
 zip.uncompress( zipOptions )
